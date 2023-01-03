@@ -26,7 +26,7 @@ func AddFile(filename string) {
 	dirpath,_:=os.Getwd()
 	filepath:=fmt.Sprintf("%v\\%v",dirpath,filename)
 	linkmap:=ReadDir()
-	fmt.Println(linkmap)
+	// fmt.Println(linkmap)
 	// if path not exist in filesystem,put it into filesystem
 	if _,ok:=linkmap[filename];!ok{
 		linkmap[filename]=filepath
@@ -38,7 +38,7 @@ func AddFile(filename string) {
 		checkerror(err)
 		_,err=wf.Write(f)
 		checkerror(err)
-		fmt.Println("mission work done")
+		fmt.Println("work done")
 	}
 }
 
@@ -98,5 +98,28 @@ func Upgrade(filename string){
 		fmt.Println("upgrade success")
 	}else{
 		fmt.Println("upgrade failed")
+	}
+}
+
+// get List of filesystem
+func List(){
+	linkmap:=ReadDir()
+	for k,v:=range linkmap{
+		fmt.Printf("%-20s %v\n",k,v)
+	}
+}
+
+// clear the file that dont exist
+func Reload(){
+	linkmap:=ReadDir()
+	for k,v:=range linkmap{
+		_,err:=os.Stat(v)
+		if err!=nil{
+			delete(linkmap,k)
+		}
+	}
+	ok:=WriteToDir(&linkmap)
+	if !ok{
+		fmt.Println("reload failed")
 	}
 }

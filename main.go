@@ -21,9 +21,10 @@ func main(){
 		}
 	}else if len(os.Args)==2{
 		switch os.Args[1]{
-		// case "list":
-
-		// case "reload":
+		case "list":
+			sfile_command.List()
+		case "reload":
+			sfile_command.Reload()
 		case "init":
 			Init()
 		default:
