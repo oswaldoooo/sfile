@@ -13,7 +13,6 @@ func checkerror(er error) bool{
 	}
 	return true
 }
-
 // add file to filesystem
 func AddFile(filename string) {
 	_,err:=os.Open(filename)

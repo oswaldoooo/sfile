@@ -16,8 +16,14 @@ func main(){
 			sfile_command.GetFIle(os.Args[2])
 		case "upgrade":
 			sfile_command.Upgrade(os.Args[2])
+		case "upload":
+			if os.Args[2]=="list"{
+				sfile_command.UploadToServer()
+			}else{
+				sfile_command.UploadFile(os.Args[2])
+			}
 		default:
-			fmt.Println("not this command")
+			fmt.Println("no this command")
 		}
 	}else if len(os.Args)==2{
 		switch os.Args[1]{
@@ -28,7 +34,7 @@ func main(){
 		case "init":
 			Init()
 		default:
-			fmt.Println("not this command")
+			fmt.Println("no this command")
 		}
 	}
 }

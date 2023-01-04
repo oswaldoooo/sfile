@@ -6,10 +6,8 @@ import (
 	"os"
 	"strings"
 )
-const(
-	FILESAVEPATH="E:\\WorkStudio\\Golang\\SFile\\conf"
-	FINALFILE=FILESAVEPATH+"\\filemap"
-)
+var FILESAVEPATH=os.Getenv("SFILE_HOME")+"\\conf"
+var FINALFILE=FILESAVEPATH+"\\filemap"
 func Exist_Dir(path string) bool {
 	_, err := os.Stat(path)
 	return checkerror(err)
@@ -49,5 +47,24 @@ func WriteToDir(v *map[string]string) bool{
 	checkerror(err)
 	_,err=f.Write([]byte(emptykey))
 	checkerror(err)
+	return true
+}
+
+// justify file exsit in filesystem
+func Exist_File(filename string) bool{
+	linkmap:=ReadDir()
+	if _,ok:=linkmap[filename];!ok{
+		return false
+	}else{
+		return true
+	}
+}
+
+// justify file exist in machine
+func Exist_File_M(filepath string)bool{
+	_,err:=os.Stat(filepath)
+	if err!=nil{
+		return false
+	}
 	return true
 }
