@@ -11,6 +11,15 @@ sfile add filename
 sfile get filename
 ```
 
+#### upload file to server (upload single file to server filesystem)
+```shell
+sfile upload filename
+```
+
+#### upload filesystem to server filesystem
+```shell
+sfile upload list
+``` 
 #### upgrade file
 
 ```shell
