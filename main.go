@@ -22,6 +22,8 @@ func main(){
 			}else{
 				sfile_command.UploadFile(os.Args[2])
 			}
+		case "--get":
+			sfile_command.Download(os.Args[2:])
 		default:
 			fmt.Println("no this command")
 		}
@@ -35,6 +37,10 @@ func main(){
 			Init()
 		default:
 			fmt.Println("no this command")
+		}
+	}else if len(os.Args)==4{
+		if os.Args[1]=="--get"{
+			sfile_command.Download(os.Args[2:])
 		}
 	}
 }

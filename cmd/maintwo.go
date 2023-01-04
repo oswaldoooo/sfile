@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net"
+	"os"
 	"strings"
 
 	remindmetools "github.com/oswaldoooo/octools/reminde"
@@ -33,12 +34,6 @@ func UploadToServer(){
 	_,err=con.Write([]byte(allcmd))
 	checkerror(err)
 	con.Close()
-	// fmt.Println(allcmd)
-	// checkerror(err)
-	// var buff []byte
-	// n,err:=con.Read(buff)
-	// checkerror(err)
-	// fmt.Println(string(buff[:n]))
 }
 // upload single file to server
 func UploadFile(filename string){
@@ -59,8 +54,51 @@ func UploadFile(filename string){
 	_,err=con.Write([]byte(allcmd))
 	checkerror(err)
 	con.Close()
-	// var buff []byte
-	// n,err:=con.Read(buff)
-	// checkerror(err)
-	// fmt.Println(string(buff[:n]))
+}
+
+// download from server filesystem
+func Download(arg []string){
+	args:=[]string{"address"}
+	res:=remindmetools.ReadConfPlus("Server",args,"site-conf.ini")
+	con,err:=net.Dial("tcp",res["address"])
+	checkerror(err)
+	if len(args)==1{
+		allcmd:="get-->"+arg[0]
+		// fmt.Println(allcmd)
+		con.Write([]byte(allcmd))
+	}else if len(args)==2{
+		allcmd:="get-->"+arg[0]+"-->"+arg[1]
+		con.Write([]byte(allcmd))
+	}
+	var buff [1024]byte
+	n,err:=con.Read(buff[:])
+	checkerror(err)
+	body:=string(buff[:n])
+	switch body{
+	case "502":
+		fmt.Println(body)
+	case "404":
+		fmt.Println(body)
+	case "403":
+		fmt.Println(body)
+	default:
+		// dont exist local filesystem
+		if !Exist_File(arg[0]){
+			f,err:=os.OpenFile(arg[0],os.O_CREATE|os.O_WRONLY|os.O_TRUNC,0755)
+			checkerror(err)
+			_,err=f.Write(buff[:n])
+			if checkerror(err){
+				AddFile(arg[0])
+			}
+		}else{
+			// exist local filesystem
+			linkmap:=ReadDir()
+			fp:=linkmap[arg[0]]
+			f,err:=os.OpenFile(fp,os.O_WRONLY|os.O_TRUNC|os.O_CREATE,0755)
+			if checkerror(err){
+				f.Write(buff[:n])
+			}
+
+		}
+	}
 }
