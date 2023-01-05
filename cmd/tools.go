@@ -8,6 +8,17 @@ import (
 )
 var FILESAVEPATH=os.Getenv("SFILE_HOME")+"\\conf"
 var FINALFILE=FILESAVEPATH+"\\filemap"
+const(
+	KB=1024
+	MB=1024*KB
+	GB=1024*MB
+)
+func CheckError(err error){
+	if err!=nil{
+		fmt.Println(err)
+		os.Exit(-1)
+	}
+}
 func Exist_Dir(path string) bool {
 	_, err := os.Stat(path)
 	return checkerror(err)
@@ -64,6 +75,7 @@ func Exist_File(filename string) bool{
 func Exist_File_M(filepath string)bool{
 	_,err:=os.Stat(filepath)
 	if err!=nil{
+		fmt.Println(err)
 		return false
 	}
 	return true

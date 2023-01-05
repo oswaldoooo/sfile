@@ -31,6 +31,8 @@ func main(){
 		switch os.Args[1]{
 		case "list":
 			sfile_command.List()
+		case "--list":
+			sfile_command.ListAll()
 		case "reload":
 			sfile_command.Reload()
 		case "init":

@@ -70,7 +70,7 @@ func Download(arg []string){
 		allcmd:="get-->"+arg[0]+"-->"+arg[1]
 		con.Write([]byte(allcmd))
 	}
-	var buff [1024]byte
+	var buff [100*MB]byte
 	n,err:=con.Read(buff[:])
 	checkerror(err)
 	body:=string(buff[:n])
@@ -101,4 +101,19 @@ func Download(arg []string){
 
 		}
 	}
+}
+
+// get list filesystem from host
+func ListAll(){
+	args:=[]string{"address"}
+	res:=remindmetools.ReadConfPlus("Server",args,"site-conf.ini")
+	con,err:=net.Dial("tcp",res["address"])
+	checkerror(err)
+	allcmd:="list-->--all"
+	_,err=con.Write([]byte(allcmd))
+	CheckError(err)
+	var buff [KB]byte
+	n,err:=con.Read(buff[:])
+	CheckError(err)
+	fmt.Print(string(buff[:n]))
 }
